@@ -56,6 +56,9 @@ jobs:
   # ------------------------------------------------------------------
   publicar:
     name: 2 - Publicar site
+    environment:
+      name: github-pages
+      url: ${{ steps.publicar.outputs.page_url }}
     needs: verificar      # <-- SÓ roda se a verificação passar!
     runs-on: ubuntu-latest
     permissions:
