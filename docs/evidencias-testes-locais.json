@@ -1,0 +1,99 @@
+{
+  "tipo": "Reprodução local em Python das três condições do workflow e simulação local do bloqueio de publicação. Os comandos Bash não foram executados devido à indisponibilidade do runtime neste ambiente. Não houve execução no GitHub Actions nem deploy no Pages.",
+  "fonte_commit": "742b74979d62c86685338d389cda6b5aabe442f9",
+  "cenarios": [
+    {
+      "cenario": "1-ok",
+      "aprovado": true,
+      "regras": [
+        {
+          "regra": "Regra 1 - O arquivo index.html existe?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        },
+        {
+          "regra": "Regra 2 - O site tem título?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        },
+        {
+          "regra": "Regra 3 - O arquivo está completo?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        }
+      ],
+      "publicacao_simulada": "atualizada",
+      "hash_antes": null,
+      "hash_depois": "e0a2d9df0e968f878ac2f7ed8d96fba49a30aca88b6103b2cfdbe612423ea76e"
+    },
+    {
+      "cenario": "2-quebrado",
+      "aprovado": false,
+      "regras": [
+        {
+          "regra": "Regra 1 - O arquivo index.html existe?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        },
+        {
+          "regra": "Regra 2 - O site tem título?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        },
+        {
+          "regra": "Regra 3 - O arquivo está completo?",
+          "codigo_saida": 1,
+          "saida": "FAIL",
+          "erro": ""
+        }
+      ],
+      "publicacao_simulada": "bloqueada",
+      "hash_antes": "e0a2d9df0e968f878ac2f7ed8d96fba49a30aca88b6103b2cfdbe612423ea76e",
+      "hash_depois": "e0a2d9df0e968f878ac2f7ed8d96fba49a30aca88b6103b2cfdbe612423ea76e"
+    },
+    {
+      "cenario": "3-corrigido",
+      "aprovado": true,
+      "regras": [
+        {
+          "regra": "Regra 1 - O arquivo index.html existe?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        },
+        {
+          "regra": "Regra 2 - O site tem título?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        },
+        {
+          "regra": "Regra 3 - O arquivo está completo?",
+          "codigo_saida": 0,
+          "saida": "PASS",
+          "erro": ""
+        }
+      ],
+      "publicacao_simulada": "atualizada",
+      "hash_antes": "e0a2d9df0e968f878ac2f7ed8d96fba49a30aca88b6103b2cfdbe612423ea76e",
+      "hash_depois": "a6cee24549fd49da86bd42b455698b0ff86d1340e057158ad5db94a716c67568"
+    }
+  ],
+  "testes_complementares": [
+    {
+      "cenario": "arquivo-ausente",
+      "bloqueado_na_regra": 1,
+      "saida": "FAIL"
+    },
+    {
+      "cenario": "sem-title",
+      "bloqueado_na_regra": 2,
+      "saida": "FAIL"
+    }
+  ]
+}

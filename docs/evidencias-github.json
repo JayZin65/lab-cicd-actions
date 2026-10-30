@@ -1,0 +1,367 @@
+{
+  "repository": "https://github.com/JayZin65/lab-cicd-actions",
+  "site": "https://jayzin65.github.io/lab-cicd-actions/",
+  "final_site_observed": {
+    "version": 3,
+    "actor": "JayZin65",
+    "displayed_date": "29/10/2026 às 23:10",
+    "timezone": "America/Sao_Paulo",
+    "commit": "ece782a"
+  },
+  "after_v2_site_observed": {
+    "version": 1,
+    "commit": "56eb380"
+  },
+  "runs": [
+    {
+      "id": 40990078154,
+      "title": "Versão 3 - corrigida",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "ece782a8067190177ab68b1652dd4fc989f7bc51",
+      "url": "https://github.com/JayZin65/lab-cicd-actions/actions/runs/40990078154",
+      "created_at": "2026-10-30T02:09:58Z",
+      "updated_at": "2026-10-30T02:10:24Z"
+    },
+    {
+      "id": 40933736298,
+      "title": "Versão 2",
+      "status": "completed",
+      "conclusion": "failure",
+      "sha": "515e9fb39dcaeb20e689d9a58cf1f5107c17aae6",
+      "url": "https://github.com/JayZin65/lab-cicd-actions/actions/runs/40933736298",
+      "created_at": "2026-10-29T18:45:03Z",
+      "updated_at": "2026-10-29T18:45:10Z"
+    },
+    {
+      "id": 40933187450,
+      "title": "Versão 1",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "56eb380c1c7a4242230cff7c7529a947db1e1959",
+      "url": "https://github.com/JayZin65/lab-cicd-actions/actions/runs/40933187450",
+      "created_at": "2026-10-29T18:41:31Z",
+      "updated_at": "2026-10-29T18:42:05Z"
+    },
+    {
+      "id": 40932939552,
+      "title": "Initial commit",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "fe6d308649b1707f11ad5752164685afe56cd72a",
+      "url": "https://github.com/JayZin65/lab-cicd-actions/actions/runs/40932939552",
+      "created_at": "2026-10-29T18:39:58Z",
+      "updated_at": "2026-10-29T18:40:17Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 40933187450,
+      "jobs": [
+        {
+          "id": 123656739492,
+          "name": "1 - Verificar arquivo",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 40933187450,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Regra 1 - O arquivo index.html existe?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Regra 2 - O site tem título?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Regra 3 - O arquivo está completo?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 123656793177,
+          "name": "2 - Publicar site",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 40933187450,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Conferir se o GitHub Pages está ligado",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Carimbar data, commit e autor no site",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Empacotar o site",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Publicar no GitHub Pages",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Mostrar o endereço do site",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 40933736298,
+      "jobs": [
+        {
+          "id": 123658668406,
+          "name": "1 - Verificar arquivo",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 40933736298,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Regra 1 - O arquivo index.html existe?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Regra 2 - O site tem título?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Regra 3 - O arquivo está completo?",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 5
+            },
+            {
+              "name": "Post Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 123658723525,
+          "name": "2 - Publicar site",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_id": 40933736298,
+          "logs_url": null,
+          "steps": null
+        }
+      ]
+    },
+    {
+      "id": 40990078154,
+      "jobs": [
+        {
+          "id": 123850084766,
+          "name": "1 - Verificar arquivo",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 40990078154,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Regra 1 - O arquivo index.html existe?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Regra 2 - O site tem título?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Regra 3 - O arquivo está completo?",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 123850131971,
+          "name": "2 - Publicar site",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 40990078154,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Conferir se o GitHub Pages está ligado",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Carimbar data, commit e autor no site",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Empacotar o site",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Publicar no GitHub Pages",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Mostrar o endereço do site",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Baixar os arquivos do repositório",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

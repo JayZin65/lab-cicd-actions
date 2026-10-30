@@ -1,0 +1,328 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Defs_Lab" targetNamespace="https://example.org/lab-cicd">
+  <bpmn:error id="ErroDeploy" name="Falha técnica no deploy" errorCode="DEPLOY_FAILED" />
+  <bpmn:collaboration id="Collaboration">
+    <bpmn:participant id="Pool" name="Desenvolver e entregar funcionalidade" processRef="Process" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process" name="TO-BE CI CD" isExecutable="false">
+    <bpmn:laneSet id="Lanes">
+      <bpmn:lane id="Lane0" name="Cliente">
+        <bpmn:flowNodeRef>inicio</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>solicitar</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane1" name="PO">
+        <bpmn:flowNodeRef>receber</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>documentar</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane2" name="DEV">
+        <bpmn:flowNodeRef>desenvolver</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>commit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>corrigir</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane3" name="QA / CI - GitHub Actions">
+        <bpmn:flowNodeRef>verificar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>aprovado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>bloquear</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane4" name="CD - GitHub Actions">
+        <bpmn:flowNodeRef>pages</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>habilitado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>preparar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>publicar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>sem_pages</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>erro</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>falha</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane5" name="DevOps">
+        <bpmn:flowNodeRef>monitorar</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>fim</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="inicio" name="Necessidade">
+      <bpmn:outgoing>Flow0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="solicitar" name="Solicitar função checar letras no CNPJ">
+      <bpmn:incoming>Flow0</bpmn:incoming>
+      <bpmn:outgoing>Flow1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="receber" name="Internalizar demanda do cliente">
+      <bpmn:incoming>Flow1</bpmn:incoming>
+      <bpmn:outgoing>Flow2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="documentar" name="Registrar requisitos e critérios de aceitação">
+      <bpmn:incoming>Flow2</bpmn:incoming>
+      <bpmn:outgoing>Flow3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="desenvolver" name="Desenvolver a alteração">
+      <bpmn:incoming>Flow3</bpmn:incoming>
+      <bpmn:outgoing>Flow4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="commit" name="Enviar index.html Commit e push na main">
+      <bpmn:incoming>Flow4</bpmn:incoming>
+      <bpmn:outgoing>Flow5</bpmn:outgoing>
+      <bpmn:incoming>Flow9</bpmn:incoming>
+    </bpmn:userTask>
+    <bpmn:userTask id="corrigir" name="Analisar logs e corrigir o arquivo">
+      <bpmn:incoming>Flow8</bpmn:incoming>
+      <bpmn:outgoing>Flow9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="verificar" name="Executar as 3 regras 1  index.html existe 2  contém &lt;title&gt; 3  contém &lt;/html&gt;">
+      <bpmn:documentation>Executar sequencialmente: test -f index.html; grep -qi "&lt;title&gt;" index.html; grep -qi "&lt;/html&gt;" index.html. Interromper na primeira falha.</bpmn:documentation>
+      <bpmn:incoming>Flow5</bpmn:incoming>
+      <bpmn:outgoing>Flow6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="aprovado" name="CI aprovada?">
+      <bpmn:incoming>Flow6</bpmn:incoming>
+      <bpmn:outgoing>Flow7</bpmn:outgoing>
+      <bpmn:outgoing>Flow10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="bloquear" name="Registrar erro e bloquear publicação Versão anterior mantida">
+      <bpmn:incoming>Flow7</bpmn:incoming>
+      <bpmn:outgoing>Flow8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="pages" name="Verificar se o Pages está habilitado">
+      <bpmn:incoming>Flow10</bpmn:incoming>
+      <bpmn:outgoing>Flow11</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="habilitado" name="Pages ligado?">
+      <bpmn:incoming>Flow11</bpmn:incoming>
+      <bpmn:outgoing>Flow12</bpmn:outgoing>
+      <bpmn:outgoing>Flow13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="preparar" name="Carimbar autor, data e commit Empacotar o site">
+      <bpmn:incoming>Flow12</bpmn:incoming>
+      <bpmn:outgoing>Flow14</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="publicar" name="Publicar artefato no GitHub Pages">
+      <bpmn:incoming>Flow14</bpmn:incoming>
+      <bpmn:outgoing>Flow15</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="sem_pages" name="Sem publicação Emitir aviso de Pages">
+      <bpmn:incoming>Flow13</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="erro" name="" attachedToRef="publicar" cancelActivity="true">
+      <bpmn:outgoing>Flow16</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorDef" errorRef="ErroDeploy" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="falha" name="Falha técnica DevOps deve tratar">
+      <bpmn:incoming>Flow16</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="monitorar" name="Conferir URL e versão Monitorar o sistema">
+      <bpmn:incoming>Flow15</bpmn:incoming>
+      <bpmn:outgoing>Flow17</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="fim" name="Funcionalidade entregue">
+      <bpmn:incoming>Flow17</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow0" sourceRef="inicio" targetRef="solicitar" name="" />
+    <bpmn:sequenceFlow id="Flow1" sourceRef="solicitar" targetRef="receber" name="" />
+    <bpmn:sequenceFlow id="Flow2" sourceRef="receber" targetRef="documentar" name="" />
+    <bpmn:sequenceFlow id="Flow3" sourceRef="documentar" targetRef="desenvolver" name="" />
+    <bpmn:sequenceFlow id="Flow4" sourceRef="desenvolver" targetRef="commit" name="" />
+    <bpmn:sequenceFlow id="Flow5" sourceRef="commit" targetRef="verificar" name="" />
+    <bpmn:sequenceFlow id="Flow6" sourceRef="verificar" targetRef="aprovado" name="" />
+    <bpmn:sequenceFlow id="Flow7" sourceRef="aprovado" targetRef="bloquear" name="Não" />
+    <bpmn:sequenceFlow id="Flow8" sourceRef="bloquear" targetRef="corrigir" name="" />
+    <bpmn:sequenceFlow id="Flow9" sourceRef="corrigir" targetRef="commit" name="Novo envio" />
+    <bpmn:sequenceFlow id="Flow10" sourceRef="aprovado" targetRef="pages" name="Sim" />
+    <bpmn:sequenceFlow id="Flow11" sourceRef="pages" targetRef="habilitado" name="" />
+    <bpmn:sequenceFlow id="Flow12" sourceRef="habilitado" targetRef="preparar" name="Sim" />
+    <bpmn:sequenceFlow id="Flow13" sourceRef="habilitado" targetRef="sem_pages" name="Não" />
+    <bpmn:sequenceFlow id="Flow14" sourceRef="preparar" targetRef="publicar" name="" />
+    <bpmn:sequenceFlow id="Flow15" sourceRef="publicar" targetRef="monitorar" name="Sucesso" />
+    <bpmn:sequenceFlow id="Flow16" sourceRef="erro" targetRef="falha" name="" />
+    <bpmn:sequenceFlow id="Flow17" sourceRef="monitorar" targetRef="fim" name="" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram">
+    <bpmndi:BPMNPlane id="Plane" bpmnElement="Collaboration">
+      <bpmndi:BPMNShape id="Pool_di" bpmnElement="Pool" isHorizontal="true">
+        <dc:Bounds x="0" y="110" width="1640" height="820" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane0_di" bpmnElement="Lane0" isHorizontal="true">
+        <dc:Bounds x="20" y="110" width="1620" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane1_di" bpmnElement="Lane1" isHorizontal="true">
+        <dc:Bounds x="20" y="220" width="1620" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane2_di" bpmnElement="Lane2" isHorizontal="true">
+        <dc:Bounds x="20" y="330" width="1620" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane3_di" bpmnElement="Lane3" isHorizontal="true">
+        <dc:Bounds x="20" y="460" width="1620" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane4_di" bpmnElement="Lane4" isHorizontal="true">
+        <dc:Bounds x="20" y="620" width="1620" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane5_di" bpmnElement="Lane5" isHorizontal="true">
+        <dc:Bounds x="20" y="810" width="1620" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="inicio_di" bpmnElement="inicio">
+        <dc:Bounds x="191" y="149" width="34" height="34" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="131" y="188" width="155" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="solicitar_di" bpmnElement="solicitar">
+        <dc:Bounds x="270" y="130" width="195" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="receber_di" bpmnElement="receber">
+        <dc:Bounds x="280" y="240" width="195" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="documentar_di" bpmnElement="documentar">
+        <dc:Bounds x="520" y="240" width="220" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="desenvolver_di" bpmnElement="desenvolver">
+        <dc:Bounds x="530" y="355" width="195" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="commit_di" bpmnElement="commit">
+        <dc:Bounds x="790" y="355" width="195" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="corrigir_di" bpmnElement="corrigir">
+        <dc:Bounds x="1230" y="355" width="225" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="verificar_di" bpmnElement="verificar">
+        <dc:Bounds x="760" y="480" width="250" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="aprovado_di" bpmnElement="aprovado" isMarkerVisible="true">
+        <dc:Bounds x="1080" y="512" width="46" height="46" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="bloquear_di" bpmnElement="bloquear">
+        <dc:Bounds x="1230" y="492" width="225" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="pages_di" bpmnElement="pages">
+        <dc:Bounds x="760" y="650" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="habilitado_di" bpmnElement="habilitado" isMarkerVisible="true">
+        <dc:Bounds x="990" y="667" width="46" height="46" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="preparar_di" bpmnElement="preparar">
+        <dc:Bounds x="1080" y="650" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="publicar_di" bpmnElement="publicar">
+        <dc:Bounds x="1310" y="650" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="sem_pages_di" bpmnElement="sem_pages">
+        <dc:Bounds x="648" y="730" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="588" y="765" width="155" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="erro_di" bpmnElement="erro">
+        <dc:Bounds x="1468" y="714" width="28" height="28" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="falha_di" bpmnElement="falha">
+        <dc:Bounds x="1550" y="727" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1490" y="762" width="155" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="monitorar_di" bpmnElement="monitorar">
+        <dc:Bounds x="1310" y="835" width="180" height="65" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fim_di" bpmnElement="fim">
+        <dc:Bounds x="1550" y="852" width="34" height="34" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1490" y="891" width="155" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow0_di" bpmnElement="Flow0">
+        <di:waypoint x="225" y="166" />
+        <di:waypoint x="270" y="166" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow1_di" bpmnElement="Flow1">
+        <di:waypoint x="367" y="200" />
+        <di:waypoint x="367" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow2_di" bpmnElement="Flow2">
+        <di:waypoint x="475" y="272" />
+        <di:waypoint x="520" y="272" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow3_di" bpmnElement="Flow3">
+        <di:waypoint x="630" y="305" />
+        <di:waypoint x="630" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow4_di" bpmnElement="Flow4">
+        <di:waypoint x="725" y="390" />
+        <di:waypoint x="790" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow5_di" bpmnElement="Flow5">
+        <di:waypoint x="887" y="425" />
+        <di:waypoint x="887" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow6_di" bpmnElement="Flow6">
+        <di:waypoint x="1010" y="535" />
+        <di:waypoint x="1080" y="535" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow7_di" bpmnElement="Flow7">
+        <di:waypoint x="1126" y="535" />
+        <di:waypoint x="1230" y="535" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1138" y="510" width="80" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow8_di" bpmnElement="Flow8">
+        <di:waypoint x="1342" y="492" />
+        <di:waypoint x="1342" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow9_di" bpmnElement="Flow9">
+        <di:waypoint x="1230" y="390" />
+        <di:waypoint x="1080" y="390" />
+        <di:waypoint x="1080" y="446" />
+        <di:waypoint x="970" y="446" />
+        <di:waypoint x="970" y="425" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1085" y="368" width="80" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow10_di" bpmnElement="Flow10">
+        <di:waypoint x="1103" y="558" />
+        <di:waypoint x="1103" y="608" />
+        <di:waypoint x="855" y="608" />
+        <di:waypoint x="855" y="650" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1089" y="570" width="80" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow11_di" bpmnElement="Flow11">
+        <di:waypoint x="950" y="690" />
+        <di:waypoint x="990" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow12_di" bpmnElement="Flow12">
+        <di:waypoint x="1036" y="690" />
+        <di:waypoint x="1080" y="690" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1026" y="664" width="80" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow13_di" bpmnElement="Flow13">
+        <di:waypoint x="1013" y="713" />
+        <di:waypoint x="1013" y="745" />
+        <di:waypoint x="678" y="745" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1004" y="735" width="80" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow14_di" bpmnElement="Flow14">
+        <di:waypoint x="1260" y="690" />
+        <di:waypoint x="1310" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow15_di" bpmnElement="Flow15">
+        <di:waypoint x="1400" y="730" />
+        <di:waypoint x="1400" y="835" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1406" y="793" width="80" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow16_di" bpmnElement="Flow16">
+        <di:waypoint x="1496" y="728" />
+        <di:waypoint x="1525" y="728" />
+        <di:waypoint x="1525" y="742" />
+        <di:waypoint x="1550" y="742" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow17_di" bpmnElement="Flow17">
+        <di:waypoint x="1490" y="869" />
+        <di:waypoint x="1550" y="869" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
